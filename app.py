@@ -9,6 +9,10 @@ with open('models/final_sleep_disorder_model.pkl', 'rb') as model_file:
 with open('models/scaler.pkl', 'rb') as scaler_file:
     scaler = pickle.load(scaler_file)
     
+# Load the label encoder
+with open('models/label_encoder.pkl', 'rb') as le_file:
+    le = pickle.load(le_file)
+    
 st.title("Sleep Disorder Predictor")
 st.write("Fill in the details below to predict sleep disorders.")
 
