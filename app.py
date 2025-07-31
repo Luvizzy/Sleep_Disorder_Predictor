@@ -52,6 +52,12 @@ input_data = np.array([[
     bmi_overweight
 ]])
 
+#Debug
+st.write("Input Data:", input_data.shape)
+if input_data.shape[1] != scaler.n_features_in_:
+    st.error(f"Input data shape mismatch: expected {scaler.n_features_in_} features, got {input_data.shape[1]}")
+
+# Scale the input data
 scaled_input = scaler.transform(input_data)
 
 if st.button("Predict"):
