@@ -1,20 +1,12 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 
 # Load the model and scaler
-with open('models/final_sleep_disorder_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
-
-with open('models/scaler.pkl', 'rb') as scaler_file:
-    scaler = pickle.load(scaler_file)
-    
+Model = joblib.load('models/final_sleep_disorder_model.pkl')
+scaler = joblib.load('models/scaler.pkl')
 # Load the label encoder
-with open('models/label_encoder.pkl', 'rb') as le_file:
-    le = pickle.load(le_file)
-    
-st.title("Sleep Disorder Predictor")
-st.write("Fill in the details below to predict sleep disorders.")
+le = joblib.load('models/label_encoder.pkl')
 
 # Input fields for features
 age = st.number_input("Age", min_value=0, max_value=120, value=30)
@@ -31,7 +23,7 @@ input_data = np.array([[age, sleep_duration, quality_sleep, stress_level, activi
 scaled_input = scaler.transform(input_data)
 
 if st.button("Predict"):
-    prediction = model.predict(scaled_input)
+    prediction = Model.predict(scaled_input)
     label_map = ["Insomnia", "None", "Sleep Apnea"]
     predicted_label = label_map[int(prediction[0])]
     st.success(f"Predicted Sleep Disorder: {predicted_label}")
