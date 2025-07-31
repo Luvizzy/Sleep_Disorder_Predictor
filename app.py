@@ -3,10 +3,12 @@ import joblib
 import numpy as np
 
 # Load the model and scaler
-Model = joblib.load('models/final_sleep_disorder_model.pkl')
-scaler = joblib.load('models/scaler.pkl')
-# Load the label encoder
-le = joblib.load('models/label_encoder.pkl')
+try:
+    Model = joblib.load('models/final_sleep_disorder_model.pkl')
+    scaler = joblib.load('models/scaler.pkl')
+except Exception as e:
+    st.error(f"Error loading model or scaler: {e}")
+    st.stop()
 
 st.title("Sleep Disorder Prediction")
 
@@ -42,18 +44,23 @@ numeric_values = np.array([
 ])
 
 # Scale the numeric values
-scaled_numeric = scaler.transform(numeric_values)
+scaled_numeric = scaler.transform(numeric_values.reshape(1, -1))
 
-#collect the input features into a list
-input_data = np.concatenate(([gender], scaled_numeric.flatten(), occupation_onehot, [bmi_overweight])).reshape(1, -1)
+# Collect the input features into a list
+# Make sure the order and number of features matches what the model expects
+# Typically: [gender, age, sleep_duration, quality_sleep, activity_level, stress_level, heart_rate, daily_steps, high_bp, low_bp, occupation_onehot..., bmi_overweight]
+input_features = np.array(
+    [gender] + list(scaled_numeric.flatten()) + occupation_onehot + [bmi_overweight]
+)
 
-#Debug
-st.write("Input Data:", input_data.shape)
-if input_data.shape[1] != scaler.n_features_in_:
-    st.error(f"Input data shape mismatch: expected {scaler.n_features_in_} features, got {input_data.shape[1]}")
-
-if st.button("Predict"):
-    prediction = Model.predict(input_data)
+# Check if input_features matches model input shape
+if hasattr(Model, 'n_features_in_') and input_features.shape[0] != Model.n_features_in_:
+    st.error(f"Feature mismatch: Model expects {Model.n_features_in_} features, but got {input_features.shape[0]}.")
+else:
+    prediction = Model.predict(input_features.reshape(1, -1))
     label_map = ["Insomnia", "None", "Sleep Apnea"]
-    predicted_label = label_map[int(prediction[0])]
-    st.success(f"Predicted Sleep Disorder: {predicted_label}")
+    try:
+        predicted_label = label_map[int(prediction[0])]
+    except (IndexError, ValueError):
+        predicted_label = "Unknown"
+st.success(f"Predicted Sleep Disorder: {predicted_label}")
