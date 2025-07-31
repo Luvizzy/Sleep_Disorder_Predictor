@@ -39,7 +39,7 @@ bmi_overweight = 1 if bmi_category == "Overweight" else 0
 
 #Apply scaler to only the numerical features
 numeric_values = np.array([
-    age, sleep_duration, quality_sleep, activity_level,
+    gender, age, sleep_duration, quality_sleep, activity_level,
     stress_level, heart_rate, daily_steps, high_bp, low_bp
 ])
 
@@ -50,7 +50,7 @@ scaled_numeric = scaler.transform(numeric_values.reshape(1, -1))
 # Make sure the order and number of features matches what the model expects
 # Typically: [gender, age, sleep_duration, quality_sleep, activity_level, stress_level, heart_rate, daily_steps, high_bp, low_bp, occupation_onehot..., bmi_overweight]
 input_features = np.array(
-    [gender] + list(scaled_numeric.flatten()) + occupation_onehot + [bmi_overweight]
+    list(scaled_numeric.flatten()) + occupation_onehot + [bmi_overweight]
 )
 
 # Check if input_features matches model input shape
