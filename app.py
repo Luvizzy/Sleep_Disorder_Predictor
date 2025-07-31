@@ -8,9 +8,10 @@ scaler = joblib.load('models/scaler.pkl')
 # Load the label encoder
 le = joblib.load('models/label_encoder.pkl')
 
+st.title("Sleep Disorder Prediction")
+
 # Gender: 0 for female, 1 for male
-gender = st.selectbox("Gender", options=["Female", "Male"])
-gender = 1 if gender == "Male" else 0
+gender = 1 if st.selectbox("Gender", options=["Female", "Male"]) == "Male" else 0
 
 # Input fields for features
 age = st.number_input("Age", min_value=0, max_value=120, value=30)
@@ -28,40 +29,31 @@ low_bp = st.number_input("Low Blood Pressure (e.g. 80)", min_value=40, max_value
 #Occupation one-hot encoding
 occupation = st.selectbox("Occupation", options=["Doctor", "Engineer","Lawyer","Nurse", "Other", "Salesperson", "Teacher"
 ])
-
-occupation_doctor = 1 if occupation == "Doctor" else 0
-occupation_engineer = 1 if occupation == "Engineer" else 0
-occupation_lawyer = 1 if occupation == "Lawyer" else 0
-occupation_nurse = 1 if occupation == "Nurse" else 0
-occupation_other = 1 if occupation == "Other" else 0
-occupation_salesperson = 1 if occupation == "Salesperson" else 0
-occupation_teacher = 1 if occupation == "Teacher" else 0
+occupation_onehot = [int(occupation == job) for job in ["Doctor", "Engineer", "Lawyer", "Nurse", "Other", "Salesperson", "Teacher"]]
 
 #BMI Category
 bmi_category = st.selectbox("BMI Category", options=[ "Normal", "Overweight", "Obese"])
 bmi_overweight = 1 if bmi_category == "Overweight" else 0
 
+#Apply scaler to only the numerical features
+numeric_values = np.array([
+    age, sleep_duration, quality_sleep, activity_level,
+    stress_level, heart_rate, daily_steps, high_bp, low_bp
+])
 
+# Scale the numeric values
+scaled_numeric = scaler.transform(numeric_values)
 
 #collect the input features into a list
-input_data = np.array([[
-    gender, age, sleep_duration, quality_sleep, activity_level,
-    stress_level, heart_rate, daily_steps, high_bp, low_bp,
-    occupation_doctor, occupation_engineer, occupation_lawyer, occupation_nurse,
-    occupation_other, occupation_salesperson, occupation_teacher,
-    bmi_overweight
-]])
+input_data = np.concatenate(([gender], scaled_numeric.flatten(), occupation_onehot, [bmi_overweight])).reshape(1, -1)
 
 #Debug
 st.write("Input Data:", input_data.shape)
 if input_data.shape[1] != scaler.n_features_in_:
     st.error(f"Input data shape mismatch: expected {scaler.n_features_in_} features, got {input_data.shape[1]}")
 
-# Scale the input data
-scaled_input = scaler.transform(input_data)
-
 if st.button("Predict"):
-    prediction = Model.predict(scaled_input)
+    prediction = Model.predict(input_data)
     label_map = ["Insomnia", "None", "Sleep Apnea"]
     predicted_label = label_map[int(prediction[0])]
     st.success(f"Predicted Sleep Disorder: {predicted_label}")
