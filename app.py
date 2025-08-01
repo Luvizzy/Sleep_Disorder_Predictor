@@ -36,14 +36,7 @@ st.markdown(
 # Logo & Header
 logo_path = os.path.join(ASSETS_DIR, "logo.png")
 logo = Image.open(logo_path)
-st.markdown(
-    """
-    <div style="display: flex; justify-content: center;">
-        <img src="assets/logo.png" width="400"/>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.image(logo, use_container_width=True)
 
 # --- Load Model & Scaler ---
 try:
@@ -118,13 +111,7 @@ if st.button("Predict"):
         
 # Gif
 gif_path = os.path.join(ASSETS_DIR, "penguin.gif")
-# Use st.markdown with HTML to center the GIF
-st.markdown(
-    f"""
-    <div style="display: flex; justify-content: center;">
-        <img src="assets/penguin.gif" width="300"/>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.image("assets/penguin.gif", use_container_width=False, width=300)
+
+
 
