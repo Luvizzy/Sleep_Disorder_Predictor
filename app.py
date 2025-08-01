@@ -1,8 +1,38 @@
 import streamlit as st
 import joblib
 import numpy as np
+from PIL import Image
 
-# Load the model and scaler
+# Style configuration
+st.set_page_config(page_title="Sleep Disorder Prediction", layout="centered")
+st.markdown(
+    """
+    <style>
+    html, body, [class*="css"] {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #0d1117;
+        color: #f0f6fc;
+    }
+    .stSlider > div > div {
+        color: #ffffff;
+    }
+    .stButton > button {
+        background-color: #238636;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Logo & Header
+logo = Image.open("assets/logo.png")
+st.image(logo, width=100)
+st.markdown("<h1 style='text-align: center; color: #f0f6fc;'>Sleep Disorder Prediction</h1>", unsafe_allow_html=True)
+
+# --- Load Model & Scaler ---
 try:
     Model = joblib.load('models/final_sleep_disorder_model.pkl')
     scaler = joblib.load('models/scaler.pkl')
@@ -10,13 +40,28 @@ except Exception as e:
     st.error(f"Error loading model or scaler: {e}")
     st.stop()
 
-st.title("Sleep Disorder Prediction")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Input fields for user information
+st.subheader("🧑‍⚕️ Information")
 # Gender: 0 for female, 1 for male
 gender = 1 if st.selectbox("Gender", options=["Female", "Male"]) == "Male" else 0
-
-# Input fields for features
 age = st.number_input("Age", min_value=0, max_value=120, value=30)
+
+st.subheader("🛌 Sleep & Health Data")
 sleep_duration = st.slider("Sleep Duration (hours)", min_value=0, max_value=24, value=7)
 quality_sleep = st.slider("Sleep Quality (1-10)", min_value=1, max_value=10, value=7)
 activity_level = st.slider(
@@ -28,11 +73,11 @@ stress_level = st.slider("Stress Level (1-10)", min_value=1, max_value=10, value
 heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=70)
 daily_steps = st.number_input("Daily Steps", min_value=0, value=5000)
 
-#High_BP and Low_BP
+st.subheader("🩺 Vitals")
 high_bp = st.number_input("High Blood Pressure (e.g. 120)", min_value=80, max_value=200, value=120)
 low_bp = st.number_input("Low Blood Pressure (e.g. 80)", min_value=40, max_value=130, value=80)
 
-#Occupation one-hot encoding
+st.subheader("💼 Demographic Information")
 occupation = st.selectbox("Occupation", options=["Doctor", "Engineer","Lawyer","Nurse", "Other", "Salesperson", "Teacher"
 ])
 occupation_onehot = [int(occupation == job) for job in ["Doctor", "Engineer", "Lawyer", "Nurse", "Other", "Salesperson", "Teacher"]]
@@ -67,4 +112,15 @@ if st.button("Predict"):
             predicted_label = label_map[int(prediction[0])]
         except (IndexError, ValueError):
             predicted_label = "Unknown"
-        st.success(f"Predicted Sleep Disorder: {predicted_label}")
+        st.markdown(f"""
+            <div style='background-color: #238636; padding: 12px; border-radius: 8px; text-align: center;'>
+                <h3 style='color: white;'>Predicted Sleep Disorder: {predicted_label}</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        
+# Gif
+st.markdown("<br>", unsafe_allow_html=True)
+st.image("assets/penguin.gif", use_column_width=False, width=300)
+st.markdown("<br>", unsafe_allow_html=True)
+
+
