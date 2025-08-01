@@ -59,7 +59,7 @@ if st.button("Complete Health Assessment"):
     # Combine numerical features
     numeric_values = np.array([
         age, sleep_duration, quality_sleep, activity_level,
-        stress_level, heart_rate, high_bp, low_bp
+        stress_level, heart_rate, high_bp, low_bp, daily_steps
     ])
 
     scaled_numeric = scaler.transform(numeric_values.reshape(1, -1))
