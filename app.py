@@ -41,8 +41,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     sleep_duration = st.selectbox("Sleep Hours per Night", options=list(range(0, 13)), index=7)
-    activity_level = st.selectbox("Physical Activity Level (minutes/day)", options=list(range(0, 101, 10)), index=3)
-    
+    activity_level = st.number_input("Physical Activity Level (minutes/day)", min_value=0, max_value=100, value=30)
+
 with col2:
     quality_sleep = st.slider("Sleep Quality (1-10)", 1, 10, 7)
     stress_level = st.slider("Stress Level (1-10)", 1, 10, 5)
