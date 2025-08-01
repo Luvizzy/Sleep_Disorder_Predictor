@@ -19,11 +19,17 @@ except Exception as e:
 st.markdown("### 🧾 Basic Information")
 col1, col2, col3 = st.columns(3)
 with col1:
-    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=170)
+    gender = st.selectbox("Gender", options=["Select gender", "Female", "Male"])
+    gender = 1 if gender == "Male" else 0
 with col2:
-    weight = st.number_input("Weight (kg)", min_value=20, max_value=200, value=70)
+    occupation = st.selectbox("Occupation", options=["Doctor", "Engineer", "Lawyer", "Nurse", "Salesperson", "Teacher", "Other"])
+    occupation_onehot = [int(occupation == job) for job in ["Doctor", "Engineer", "Lawyer", "Nurse", "Salesperson", "Teacher", "Other"]]
 with col3:
     age = st.number_input("Age", min_value=0, max_value=120, value=30)
+    
+# BMI Category
+bmi_category = st.selectbox("BMI Category", options=["Normal", "Overweight"])
+bmi_overweight = 1 if bmi_category == "Overweight" else 0
 
 # --- Sleep & Health Data ---
 st.markdown("### 🛌 Sleep & Health Data")
@@ -46,20 +52,6 @@ with col2:
     low_bp = st.number_input("Diastolic Pressure (mmHg)", min_value=40, max_value=130, value=80)
 with col3:
     heart_rate = st.number_input("Heart Rate (BPM)", min_value=40, max_value=200, value=72)
-
-# --- Demographics ---
-st.markdown("### 🌍 Demographic Information")
-col1, col2 = st.columns(2)
-with col1:
-    gender = st.selectbox("Gender", options=["Select gender", "Female", "Male"])
-    gender = 1 if gender == "Male" else 0
-with col2:
-    occupation = st.selectbox("Occupation", options=["Doctor", "Engineer", "Lawyer", "Nurse", "Salesperson", "Teacher", "Other"])
-    occupation_onehot = [int(occupation == job) for job in ["Doctor", "Engineer", "Lawyer", "Nurse", "Salesperson", "Teacher", "Other"]]
-
-# BMI Category
-bmi_category = st.selectbox("BMI Category", options=["Normal", "Overweight"])
-bmi_overweight = 1 if bmi_category == "Overweight" else 0
 
 # --- Predict Button ---
 if st.button("Complete Health Assessment"):
