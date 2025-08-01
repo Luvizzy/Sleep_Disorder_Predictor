@@ -41,6 +41,9 @@ with col2:
     quality_sleep = st.slider("Sleep Quality (1-10)", 1, 10, 7)
     stress_level = st.slider("Stress Level (1-10)", 1, 10, 5)
 
+daily_steps = st.number_input("Daily Steps", min_value=0, value=5000)
+
+
 # --- Vitals ---
 st.markdown("### 🩺 Vitals")
 col1, col2, col3 = st.columns(3)
