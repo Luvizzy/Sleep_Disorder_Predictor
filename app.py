@@ -36,7 +36,14 @@ st.markdown(
 # Logo & Header
 logo_path = os.path.join(ASSETS_DIR, "logo.png")
 logo = Image.open(logo_path)
-st.image(logo, width=100)
+st.markdown(
+    """
+    <div style="display: flex; justify-content: center;">
+        <img src="assets/logo.png" width="400"/>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- Load Model & Scaler ---
 try:
@@ -45,21 +52,6 @@ try:
 except Exception as e:
     st.error(f"Error loading model or scaler: {e}")
     st.stop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Input fields for user information
 st.subheader("🧑‍⚕️ Information")
@@ -126,6 +118,13 @@ if st.button("Predict"):
         
 # Gif
 gif_path = os.path.join(ASSETS_DIR, "penguin.gif")
-st.image(gif_path, use_column_width=False, width=300)
-
+# Use st.markdown with HTML to center the GIF
+st.markdown(
+    f"""
+    <div style="display: flex; justify-content: center;">
+        <img src="assets/penguin.gif" width="300"/>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
