@@ -2,10 +2,10 @@ import streamlit as st
 import joblib
 import numpy as np
 
-st.set_page_config(page_title="Health Profile Assessment", layout="centered")
+st.set_page_config(page_title="Sleep Disorder Assessment", layout="centered")
 
-st.markdown("<h2 style='text-align: center; color: #1BA1F3;'>Health Profile Assessment</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Complete your comprehensive health profile</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #1BA1F3;'>Sleep Disorder Assessment</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Complete your comprehensive sleep disorder assessment</p>", unsafe_allow_html=True)
 
 # --- Load Model & Scaler ---
 try:
@@ -40,8 +40,6 @@ with col1:
 with col2:
     quality_sleep = st.slider("Sleep Quality (1-10)", 1, 10, 7)
     stress_level = st.slider("Stress Level (1-10)", 1, 10, 5)
-
-diet_quality = st.text_area("Diet Quality Description", placeholder="Describe your typical diet and eating habits…")
 
 # --- Vitals ---
 st.markdown("### 🩺 Vitals")
