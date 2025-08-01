@@ -36,7 +36,7 @@ st.markdown(
 # Logo & Header
 logo_path = os.path.join(ASSETS_DIR, "logo.png")
 logo = Image.open(logo_path)
-st.image(logo, width=150)
+st.image(logo, width=400)
 
 # --- Load Model & Scaler ---
 try:
