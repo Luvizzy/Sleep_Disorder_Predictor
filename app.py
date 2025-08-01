@@ -2,6 +2,12 @@ import streamlit as st
 import joblib
 import numpy as np
 from PIL import Image
+import os
+
+# Get the absolute path to the assets folder
+BASE_DIR = os.path.dirname(__file__)
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+
 
 # Style configuration
 st.set_page_config(page_title="Sleep Disorder Prediction", layout="centered")
@@ -28,9 +34,9 @@ st.markdown(
 )
 
 # Logo & Header
-logo = Image.open("assets/logo.png")
+logo_path = os.path.join(ASSETS_DIR, "logo.png")
+logo = Image.open(logo_path)
 st.image(logo, width=100)
-st.markdown("<h1 style='text-align: center; color: #f0f6fc;'>Sleep Disorder Prediction</h1>", unsafe_allow_html=True)
 
 # --- Load Model & Scaler ---
 try:
@@ -119,8 +125,7 @@ if st.button("Predict"):
         """, unsafe_allow_html=True)
         
 # Gif
-st.markdown("<br>", unsafe_allow_html=True)
-st.image("assets/penguin.gif", use_column_width=False, width=300)
-st.markdown("<br>", unsafe_allow_html=True)
+gif_path = os.path.join(ASSETS_DIR, "penguin.gif")
+st.image(gif_path, use_column_width=False, width=300)
 
 
