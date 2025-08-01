@@ -34,7 +34,7 @@ occupation = st.selectbox("Occupation", options=["Doctor", "Engineer","Lawyer","
 occupation_onehot = [int(occupation == job) for job in ["Doctor", "Engineer", "Lawyer", "Nurse", "Other", "Salesperson", "Teacher"]]
 
 #BMI Category
-bmi_category = st.selectbox("BMI Category", options=[ "Normal", "Overweight", "Obese"])
+bmi_category = st.selectbox("BMI Category", options=[ "Normal", "Overweight"])
 bmi_overweight = 1 if bmi_category == "Overweight" else 0
 
 #Apply scaler to only the numerical features
@@ -53,14 +53,14 @@ input_features = np.array(
     [gender] + list(scaled_numeric.flatten()) + occupation_onehot + [bmi_overweight]
 )
 
-# Check if input_features matches model input shape
-if hasattr(Model, 'n_features_in_') and input_features.shape[0] != Model.n_features_in_:
-    st.error(f"Feature mismatch: Model expects {Model.n_features_in_} features, but got {input_features.shape[0]}.")
-else:
-    prediction = Model.predict(input_features.reshape(1, -1))
-    label_map = ["Insomnia", "None", "Sleep Apnea"]
-    try:
-        predicted_label = label_map[int(prediction[0])]
-    except (IndexError, ValueError):
-        predicted_label = "Unknown"
-st.success(f"Predicted Sleep Disorder: {predicted_label}")
+if st.button("Predict"):
+    if hasattr(Model, 'n_features_in_') and input_features.shape[0] != Model.n_features_in_:
+        st.error(f"Feature mismatch: Model expects {Model.n_features_in_} features, but got {input_features.shape[0]}.")
+    else:
+        prediction = Model.predict(input_features.reshape(1, -1))
+        label_map = ["Insomnia", "None", "Sleep Apnea"]
+        try:
+            predicted_label = label_map[int(prediction[0])]
+        except (IndexError, ValueError):
+            predicted_label = "Unknown"
+        st.success(f"Predicted Sleep Disorder: {predicted_label}")
