@@ -78,7 +78,7 @@ if st.button("Complete Health Assessment"):
             predicted_label = "Unknown"
 
         st.markdown(f"""
-        <div style='margin-top: 30px; background-color: #238636; padding: 16px; border-radius: 10px; text-align: center;'>
+        <div style='margin-top: 30px; background-color: #1BA1F3; padding: 16px; border-radius: 10px; text-align: center;'>
             <h3 style='color: white;'>Predicted Sleep Disorder: {predicted_label}</h3>
         </div>
         """, unsafe_allow_html=True)
