@@ -19,7 +19,11 @@ gender = 1 if st.selectbox("Gender", options=["Female", "Male"]) == "Male" else 
 age = st.number_input("Age", min_value=0, max_value=120, value=30)
 sleep_duration = st.slider("Sleep Duration (hours)", min_value=0, max_value=24, value=7)
 quality_sleep = st.slider("Sleep Quality (1-10)", min_value=1, max_value=10, value=7)
-activity_level = st.slider("Activity Level (1-10)", min_value=1, max_value=10, value=5)
+activity_level = st.slider(
+    "Physical Activity Level (minutes/day)",
+    min_value=0, max_value=100, value=30,
+    help="Estimated number of minutes spent on physical activity daily."
+)
 stress_level = st.slider("Stress Level (1-10)", min_value=1, max_value=10, value=5)
 heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=70)
 daily_steps = st.number_input("Daily Steps", min_value=0, value=5000)
